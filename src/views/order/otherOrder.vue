@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <div class="form-cont">
+      <el-input class="inp" v-model="form.orderNo" placeholder="订单号" />
+      <el-date-picker class="inp" v-model="form.startTime" type="date" placeholder="开始时间" style="width: 100%;" />
+      <el-date-picker class="inp" v-model="form.endTime" type="date" placeholder="结束时间" style="width: 100%;" />
+      <el-button type="primary" @click="fetchData">搜索</el-button>
+      <el-button @click="reset">重置</el-button>
+    </div>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -64,6 +71,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      style="margin-top: 20px;text-align: right;"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="form.pageNum"
+      :page-sizes="[10, 20, 30, 50]"
+      :page-size="form.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </div>
 </template>
 
@@ -84,7 +101,15 @@ export default {
   data() {
     return {
       list: null,
-      listLoading: true
+      listLoading: true,
+      total:0,
+      form: {
+          orderNo:"",
+          pageNum:1,
+          pageSize:20,
+          startTime:"",
+          endTime:""
+      }
     }
   },
   created() {
@@ -93,19 +118,41 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      let params = {
-          "orderNo":"",
-          "pageNum":1,
-          "pageSize":10,
-          "startTime":"2023-11-01 00:00:00",
-          "endTime":"2023-11-18 00:00:00"
-      }
-      getTicketList(params).then(res => {
+      getTicketList(this.form).then(res => {
         console.log(res)
-        this.list = res.data
+        this.list = res.data.list
+        this.total = res.data.total
         this.listLoading = false
       })
+    },
+    reset(){
+      this.form = {
+          orderNo:"",
+          pageNum:1,
+          pageSize:20,
+          startTime:"",
+          endTime:""
+      }
+      this.fetchData()
+    },
+    handleSizeChange(val) {
+      this.form.pageSize = val;
+      this.fetchData()
+    },
+    handleCurrentChange(val) {
+      this.form.pageNum = val;
+      this.fetchData()
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+.form-cont{
+  display: flex;
+  margin-bottom: 20px;
+  .inp{
+    width: 200px!important;
+    margin-right: 20px;
+  }
+}
+</style>

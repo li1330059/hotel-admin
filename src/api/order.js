@@ -1,25 +1,31 @@
 import request from '@/utils/request'
 
-export function getHotelList(params) {
+export function getHotelList(data) {
   return request({
     url: '/admin/hotel/orderlist',
     method: 'post',
-    params
+    data,
   })
 }
 
-export function getTicketList(params) {
+export function getTicketList(data) {
   return request({
     url: '/admin/ticket/orderlist',
     method: 'post',
-    params
+    data
   })
 }
 
-export function getRefundList(params) {
+export function getRefundList(data) {
   return request({
     url: '/admin/refund/orderlist',
     method: 'post',
-    params
+    data
   })
+}
+
+export function exportHotel(params) {
+  console.dir(request.defaults.baseURL + 'admin/export/hotel/orderlist?startTime=' + params.startTime + '&endTime=' + params.endTime)
+  window.location.href = request.defaults.baseURL + 'admin/export/hotel/orderlist?startTime=' + params.startTime + '&endTime=' + params.endTime
+  return
 }
