@@ -3,7 +3,6 @@
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb class="breadcrumb-container" />
-
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
@@ -28,6 +27,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    <el-button style="float: right;margin: 10px 20px 0 0;" type="primary" size="mini" @click="open('http://jht.wangshangquan.top/admin')">老后台</el-button>
   </div>
 </template>
 
@@ -54,7 +54,10 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-    }
+    },
+    open(url){
+      window.open(url)
+    },
   }
 }
 </script>
