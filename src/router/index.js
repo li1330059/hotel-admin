@@ -55,6 +55,18 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/bannerTop',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'bannerTop',
+        component: () => import('@/views/bannerTop/index'),
+        meta: { title: '图片展示', icon: 'form' }
+      }
+    ]
+  },
+  {
     path: '/订单管理',
     component: Layout,
     redirect: '/order',
