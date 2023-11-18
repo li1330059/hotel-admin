@@ -25,52 +25,37 @@
           {{ scope.row.ddhao }}
         </template>
       </el-table-column>
-      <el-table-column label="开始日期">
+      <el-table-column label="标题">
         <template slot-scope="scope">
-          {{ scope.row.startDate }}
+          {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column label="结束日期">
+      <el-table-column label="姓名">
         <template slot-scope="scope">
-          {{ scope.row.stopDate }}
+          {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="房间数量">
-        <template slot-scope="scope">
-          {{ scope.row.roomNum }}
-        </template>
-      </el-table-column>
-      <el-table-column label="住户姓名">
-        <template slot-scope="scope">
-          {{ scope.row.liverName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="身份证号">
-        <template slot-scope="scope">
-          {{ scope.row.IdCard }}
-        </template>
-      </el-table-column>
-      <el-table-column label="手机号">
+      <el-table-column label="联系方式">
         <template slot-scope="scope">
           {{ scope.row.phone }}
         </template>
       </el-table-column>
-      <el-table-column label="酒店名称">
+      <el-table-column label="退款金额">
         <template slot-scope="scope">
-          {{ scope.row.jdName }}
+          {{ scope.row.jine }}
         </template>
       </el-table-column>
-      <el-table-column label="实收金额">
+      <el-table-column label="订单归属">
         <template slot-scope="scope">
-          {{ scope.row.ssjine }}
+          {{ scope.row.dd }}
         </template>
       </el-table-column>
-      <el-table-column label="下单时间">
+      <el-table-column label="退款原因">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.tkyy }}
         </template>
       </el-table-column>
-      <el-table-column label="订单状态">
+      <el-table-column label="状态">
         <template slot-scope="scope">
           {{ scope.row.status }}
         </template>

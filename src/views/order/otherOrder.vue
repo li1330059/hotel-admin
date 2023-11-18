@@ -25,39 +25,24 @@
           {{ scope.row.ddhao }}
         </template>
       </el-table-column>
-      <el-table-column label="开始日期">
+      <el-table-column label="使用日期">
         <template slot-scope="scope">
-          {{ scope.row.startDate }}
+          {{ scope.row.syrq }}
         </template>
       </el-table-column>
-      <el-table-column label="结束日期">
+      <el-table-column label="出行人">
         <template slot-scope="scope">
-          {{ scope.row.stopDate }}
+          {{ scope.row.cxr }}
         </template>
       </el-table-column>
-      <el-table-column label="房间数量">
+      <el-table-column label="数量">
         <template slot-scope="scope">
-          {{ scope.row.roomNum }}
+          {{ scope.row.num }}
         </template>
       </el-table-column>
-      <el-table-column label="住户姓名">
+      <el-table-column label="联系人手机号">
         <template slot-scope="scope">
-          {{ scope.row.liverName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="身份证号">
-        <template slot-scope="scope">
-          {{ scope.row.IdCard }}
-        </template>
-      </el-table-column>
-      <el-table-column label="手机号">
-        <template slot-scope="scope">
-          {{ scope.row.phone }}
-        </template>
-      </el-table-column>
-      <el-table-column label="酒店名称">
-        <template slot-scope="scope">
-          {{ scope.row.jdName }}
+          {{ scope.row.lxrPhone }}
         </template>
       </el-table-column>
       <el-table-column label="实收金额">
@@ -65,9 +50,9 @@
           {{ scope.row.ssjine }}
         </template>
       </el-table-column>
-      <el-table-column label="下单时间">
+      <el-table-column label="订单归属">
         <template slot-scope="scope">
-          {{ scope.row.create_time }}
+          {{ scope.row.dd }}
         </template>
       </el-table-column>
       <el-table-column label="订单状态">
