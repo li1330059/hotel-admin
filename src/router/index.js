@@ -67,6 +67,40 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/hotelManage',
+    component: Layout,
+    redirect: '/order',
+    name: 'order',
+    meta: { title: '酒店管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'hotelList',
+        name: 'hotelList',
+        component: () => import('@/views/hotel/hotelList'),
+        meta: { title: '酒店列表', icon: 'table' }
+      },
+      {
+        path: 'roomList',
+        name: 'roomList',
+        component: () => import('@/views/hotel/roomList'),
+        meta: { title: '房间列表', icon: 'table' }
+      },{
+        path: 'hotelAdd',
+        name: 'hotelAdd',
+        hidden: true,
+        component: () => import('@/views/hotel/hotelAdd'),
+        meta: { title: '新增酒店', icon: 'table' }
+      },{
+        path: 'roomAdd',
+        name: 'roomAdd',
+        hidden: true,
+        component: () => import('@/views/hotel/roomAdd'),
+        meta: { title: '新增房间', icon: 'table' }
+      }
+
+    ]
+  },
+  {
     path: '/订单管理',
     component: Layout,
     redirect: '/order',
