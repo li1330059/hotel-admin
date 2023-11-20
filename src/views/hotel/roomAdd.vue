@@ -37,15 +37,23 @@
         <el-input v-model="form.stock" />
       </el-form-item>
       <el-form-item label="上传房间图片">
-        <el-upload
-          class="avatar-uploader"
-          action="http://admin.zjjatjd.top/admin/upload"
-          accept=".jpg,.jpeg,.png,.svg,.svga,gif,JPG,JPEG,PNG,GIF"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess">
-          <img v-if="form.tp" :src="form.tp" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+        <div class="list">
+          <div v-for="(item,index) in form.tp" :key="index" class="list-item">
+            <el-upload
+              class="avatar-uploader"
+              action="http://admin.zjjatjd.top/admin/upload"
+              accept=".jpg,.jpeg,.png,.svg,.svga,gif,JPG,JPEG,PNG,GIF"
+              :show-file-list="false"
+              :on-success="(response, file, fileList) => handleSuccess(response, file, fileList, index)">
+              <img v-if="item.img" :src="item.img" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+            <div class="ctrl">
+              <el-button type="danger" @click="del(index)">删除</el-button>
+            </div>
+          </div>
+        </div>
+        <el-button type="primary" @click="addPic">添加图片</el-button>
       </el-form-item>
       <el-form-item label="是否推荐">
         <el-switch
@@ -87,7 +95,7 @@ export default {
         fymx: '',
         fyzc:'',
         stock:'',
-        tp:'',
+        tp:[],
         tj:0,
         status:0
       },
@@ -105,17 +113,41 @@ export default {
       getRoomDetail({id:this.$route.query.id}).then(res => {
         if(res.status == 200){
           this.form = res.data
+          let arr = this.form.tp.split("|");
+          for(let i in arr){
+            arr[i] = {
+              img:arr[i]
+            }
+          }
+           this.form.tp = arr
         }
       })
     }
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.form.tp = res.data.file_name;
+    handleSuccess(response, file, fileList, index) {
+      this.form.tp[index].img = response.data.file_name;
+    },
+    del(index) {
+      this.form.tp.splice(index, 1);
+    },
+    addPic(){
+      this.form.tp.push(
+        {
+          img:""
+        }
+      )
     },
     onSubmit() {
+      let arr = [];
+      for(let i in this.form.tp){
+        arr.push(this.form.tp[i].img)
+      }
+      let params = JSON.parse(JSON.stringify(this.form))
+      params.tp = arr.join("|")
+      console.dir(params)
       if(!this.$route.query.id){
-        getRoomAdd(this.form).then(res => {
+        getRoomAdd(params).then(res => {
           if(res.status == 200){
             this.$message({
               message: '新建成功',
@@ -130,8 +162,8 @@ export default {
           }
         })
       }else{
-        this.form.id = this.$route.query.id;
-        getRoomEdit(this.form).then(res => {
+        params.id = this.$route.query.id;
+        getRoomEdit(params).then(res => {
           if(res.status == 200){
             this.$message({
               message: '修改成功',
@@ -155,6 +187,20 @@ export default {
 <style scoped>
 .line{
   text-align: center;
+}
+.list{
+  display: flex;
+  flex-wrap: wrap;
+  .list-item{
+    .ctrl{
+      width: 100%;
+      display: flex;
+    }
+    margin: 0 20px 20px 0;
+  }
+  .avatar-uploader{
+    margin-bottom: 10px;
+  }
 }
 ::v-deep .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
