@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="订单归属">
         <template slot-scope="scope">
-          {{ scope.row.dd }}
+          {{ scope.row.owner }}
         </template>
       </el-table-column>
       <el-table-column label="退款原因">
