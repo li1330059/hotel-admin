@@ -60,6 +60,13 @@
           {{ scope.row.status }}
         </template>
       </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <div class="btn-group" v-if="scope.row.status != '已退款'&&scope.row.status != '已通过'">
+            <div @click="openRefund(scope.row)">退款</div>
+          </div>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       style="margin-top: 20px;text-align: right;"
@@ -71,11 +78,34 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <el-form ref="reform" :model="reform" label-width="120px">
+        <el-form-item label="审核">
+          <el-switch
+            v-model="reform.type"
+            :active-value="1"
+            :inactive-value="0"
+            active-text="通过"
+            inactive-text="不通过">
+          </el-switch>
+        </el-form-item>
+        <el-form-item label="拒绝理由" v-if="reform.type == 0">
+          <el-input v-model="reform.text" type="textarea"/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="refund">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getRefundList } from '@/api/order'
+import { getRefundList,setRefund,setNoRefund } from '@/api/order'
 
 export default {
   filters: {
@@ -99,7 +129,14 @@ export default {
           pageSize:20,
           startTime:"",
           endTime:""
-      }
+      },
+      reform: {
+          type:0,
+          text:""
+      },
+      dialogVisible: false,
+      reId:"",
+      dd:""
     }
   },
   created() {
@@ -132,6 +169,51 @@ export default {
     handleCurrentChange(val) {
       this.form.pageNum = val;
       this.fetchData()
+    },
+    openRefund(val) {
+      this.dialogVisible = true;
+      this.reId = val.id;
+      this.dd = val.dd;
+    },
+    refund(){
+      let params = {
+        id:this.reId,
+        dd:this.dd
+      }
+      if(this.reform.type == 1){
+        setRefund(params).then(res => {
+            if(res.status == 200){
+              this.$message({
+                message: '操作成功',
+                type: 'success'
+              })
+              this.dialogVisible = false;
+              this.fetchData()
+            }else{
+              this.$message({
+                message: res.message,
+                type: 'warning'
+              })
+            }
+        })
+      }else{
+        params.wtgyy = this.reform.text
+        setNoRefund(params).then(res => {
+            if(res.status == 200){
+              this.$message({
+                message: '操作成功',
+                type: 'success'
+              })
+              this.dialogVisible = false;
+              this.fetchData()
+            }else{
+              this.$message({
+                message: res.message,
+                type: 'warning'
+              })
+            }
+        })
+      }
     }
   }
 }
@@ -143,6 +225,14 @@ export default {
   .inp{
     width: 200px!important;
     margin-right: 20px;
+  }
+}
+.btn-group{
+  display: flex;
+  div{
+    margin: 0 10px;
+    color:#409eff;
+    cursor: pointer;
   }
 }
 </style>
