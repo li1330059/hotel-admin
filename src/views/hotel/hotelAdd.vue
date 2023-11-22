@@ -88,6 +88,7 @@ export default {
       getHotelDetail({id:this.$route.query.id}).then(res => {
         if(res.status == 200){
           this.form = res.data
+          this.form.bannertp = JSON.parse(this.form.bannertp)
         }
       })
     }
